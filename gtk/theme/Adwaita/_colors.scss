@@ -33,7 +33,7 @@ $destructive_color: #ff5555;
 
 $osd_fg_color: #cdd6f4;
 $osd_text_color: #cdd6f4;
-$osd_bg_color: transparentize($bg_color, 0.1);
+$osd_bg_color: $bg_color;
 $osd_insensitive_bg_color: transparentize(mix($osd_fg_color, opacify($osd_bg_color, 1), 10%), 0.5);
 $osd_insensitive_fg_color: mix($osd_fg_color, opacify($osd_bg_color, 1), 50%);
 $osd_borders_color: transparentize(#151623, 0.3);
