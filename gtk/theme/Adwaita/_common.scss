@@ -166,7 +166,7 @@ flowbox {
 
 .content-view .tile {
   margin: 2px;
-  background-color: if($variant=='light', transparent, black);
+  background-color: if($variant=='light', transparent, #151623);
   border-radius: 0;
   padding: 0;
   
@@ -243,8 +243,8 @@ assistant {
   border: none;
   background-color: $osd_bg_color;
   background-clip: padding-box;
-  text-shadow: 0 1px black;
-  -gtk-icon-shadow: 0 1px black;
+  text-shadow: 0 1px #151623;
+  -gtk-icon-shadow: 0 1px #151623;
 
   &:backdrop {
     text-shadow: none;
@@ -759,8 +759,8 @@ button {
       @include button(undecorated);
 
       box-shadow: none; //FIXME respect no edge on the button mixin
-      text-shadow: 0 1px black;
-      -gtk-icon-shadow: 0 1px black;
+      text-shadow: 0 1px #151623;
+      -gtk-icon-shadow: 0 1px #151623;
 
       &:hover { @include button(osd-hover); }
 
@@ -782,7 +782,7 @@ button {
   @each $b_type, $b_color in (suggested-action, $suggested_bg_color),
                              (destructive-action, $destructive_color) {
     &.#{$b_type} {
-      @include button(normal, $b_color, white);
+      @include button(normal, $b_color, #cdd6f4);
 
       &.flat {
         @include button(undecorated);
@@ -790,23 +790,23 @@ button {
         color: $b_color; //FIXME: does it work on the dark variant?
       }
 
-      &:hover { @include button(hover, $b_color, white); }
+      &:hover { @include button(hover, $b_color, #cdd6f4); }
 
       &:active,
-      &:checked { @include button(active, $b_color, white); }
+      &:checked { @include button(active, $b_color, #cdd6f4); }
 
       &:backdrop,
       &.flat:backdrop {
-        @include button(backdrop, $b_color, white);
+        @include button(backdrop, $b_color, #cdd6f4);
 
         &:active,
-        &:checked { @include button(backdrop-active, $b_color, white); }
+        &:checked { @include button(backdrop-active, $b_color, #cdd6f4); }
 
         &:disabled {
           @include button(backdrop-insensitive);
 
           &:active,
-          &:checked { @include button(backdrop-insensitive-active, $b_color, white); }
+          &:checked { @include button(backdrop-insensitive-active, $b_color, #cdd6f4); }
         }
       }
 
@@ -822,7 +822,7 @@ button {
         @include button(insensitive);
 
         &:active,
-        &:checked { @include button(insensitive-active, $b_color, white); }
+        &:checked { @include button(insensitive-active, $b_color, #cdd6f4); }
       }
 
       .osd & {
@@ -1103,8 +1103,8 @@ toolbar.inline-toolbar toolbutton {
   background-color: transparent;
   background-image: none;
   border-color: transparent;
-  box-shadow: inset 0 1px transparentize(white, 1),
-              0 1px transparentize(white, 1);
+  box-shadow: inset 0 1px transparentize(#cdd6f4, 1),
+              0 1px transparentize(#cdd6f4, 1);
   text-shadow: none;
   -gtk-icon-shadow: none;
 }
@@ -1286,8 +1286,8 @@ spinbutton {
       }
 
       &:active {
-        background-color: transparentize(black, 0.9);
-        box-shadow: inset 0 2px 3px -1px transparentize(black, 0.8);
+        background-color: transparentize(#151623, 0.9);
+        box-shadow: inset 0 2px 3px -1px transparentize(#151623, 0.8);
       }
 
       &:backdrop {
@@ -1326,7 +1326,7 @@ spinbutton {
       border-color: transparentize($osd_borders_color, 0.3);
       border-radius: 0;
       box-shadow: none;
-      -gtk-icon-shadow: 0 1px black;
+      -gtk-icon-shadow: 0 1px #151623;
 
       &:dir(rtl) { border-style: none solid none none; }
 
@@ -1336,7 +1336,7 @@ spinbutton {
         color: $osd_fg_color;
         border-color: transparentize(opacify($osd_borders_color, 1), 0.5);
         background-color: transparentize($osd_fg_color, 0.9);
-        -gtk-icon-shadow: 0 1px black;
+        -gtk-icon-shadow: 0 1px #151623;
         box-shadow: none;
       }
 
@@ -1618,7 +1618,7 @@ headerbar {
 
     color: $selected_fg_color;
     border-color: $suggested_border_color;
-    text-shadow: 0 -1px transparentize(black, 0.5);
+    text-shadow: 0 -1px transparentize(#151623, 0.5);
 
     @include headerbar_fill($suggested_bg_color, $_hc);
 
@@ -2046,7 +2046,7 @@ treeview.view {
 
         }
 
-        @else { box-shadow: inset 0 1px transparentize(white, 0.95); }
+        @else { box-shadow: inset 0 1px transparentize(#cdd6f4, 0.95); }
 
         background-image: image($base_color);
 
@@ -2166,7 +2166,7 @@ menubar,
 .menubar {
   -GtkWidget-window-dragging: true;
   padding: 0px;
-  box-shadow: inset 0 -1px transparentize(black, 0.9);
+  box-shadow: inset 0 -1px transparentize(#151623, 0.9);
 
   &:backdrop { background-color: $backdrop_bg_color; }
 
@@ -2325,13 +2325,13 @@ popover.background {
   }
 
   .csd & {
-    $_popover_border: if($variant=='light', transparentize(black, 0.77), transparentize(black, 0.25));
+    $_popover_border: if($variant=='light', transparentize(#151623, 0.77), transparentize(#151623, 0.25));
 
     background-clip: padding-box;
     border-color: $_popover_border;
   }
 
-  box-shadow: 0 1px 2px transparentize(black, 0.7);
+  box-shadow: 0 1px 2px transparentize(#151623, 0.7);
 
   &:backdrop {
     background-color: $backdrop_bg_color;
@@ -2350,7 +2350,7 @@ popover.background {
     &.magnifier {
       @extend %osd;
 
-      border: 1px solid transparentize(white, 0.9);
+      border: 1px solid transparentize(#cdd6f4, 0.9);
 
       button { @extend %osd_button };
     }
@@ -2494,7 +2494,7 @@ notebook {
       &:hover:not(:active):not(:backdrop) {
         background-clip: padding-box;
         background-image: none;
-        background-color: transparentize(white, 0.7);
+        background-color: transparentize(#cdd6f4, 0.7);
         border-color: transparent;
         box-shadow: none;
       }
@@ -2708,7 +2708,7 @@ scrollbar {
         min-width: 3px;
         min-height: 3px;
         background-color: $fg_color;
-        border: 1px solid if($variant == 'light', white, black);
+        border: 1px solid if($variant == 'light', #cdd6f4, #151623);
       }
 
       button {
@@ -2717,7 +2717,7 @@ scrollbar {
         background-color: $fg_color;
         background-clip: padding-box;
         border-radius: 100%;
-        border: 1px solid if($variant == 'light', white, black);
+        border: 1px solid if($variant == 'light', #cdd6f4, #151623);
         -gtk-icon-source: none;
       }
 
@@ -2829,14 +2829,14 @@ switch {
   border-radius: 14px;
   color: $fg_color;
   background-color: $dark_fill;
-  text-shadow: 0 1px transparentize(black, 0.9);
+  text-shadow: 0 1px transparentize(#151623, 0.9);
 
   &:checked {
     color: $selected_fg_color;
     border-color: $checkradio_borders_color;
     background-color: $checkradio_bg_color;
     text-shadow: 0 1px transparentize($selected_borders_color, 0.5),
-                 0 0 2px transparentize(white, 0.4);
+                 0 0 2px transparentize(#cdd6f4, 0.4);
   }
 
   &:disabled {
@@ -2997,7 +2997,7 @@ radio {
 
   & {
     // for unchecked
-    $_c: if($variant=='light', white, $bg_color);
+    $_c: if($variant=='light', #cdd6f4, $bg_color);
 
     @each $state, $t in ("", "normal"),
                         (":hover", "hover"),
@@ -3735,7 +3735,7 @@ printdialog {
   paper {
     color: $fg_color;
     border: 1px solid $borders_color;
-    background: white;
+    background: #cdd6f4;
     padding: 0;
 
     &:backdrop {
@@ -3823,7 +3823,7 @@ scrolledwindow {
 
 //vbox and hbox separators
 separator {
-  background: transparentize(black, 0.9);
+  background: transparentize(#151623, 0.9);
   min-width: 1px;
   min-height: 1px;
 }
@@ -3858,12 +3858,12 @@ row {
 
     &:hover { background-color: if(variant == light, transparentize($fg_color, 0.9), transparentize($fg_color, 0.95)); }
 
-    &:active { box-shadow: inset 0 2px 2px -2px transparentize(black, 0.8); }
+    &:active { box-shadow: inset 0 2px 2px -2px transparentize(#151623, 0.8); }
 
     &:backdrop:hover { background-color: transparent; }
 
     &:selected {
-      &:active { box-shadow: inset 0 2px 3px -1px transparentize(black, 0.5); }
+      &:active { box-shadow: inset 0 2px 3px -1px transparentize(#151623, 0.5); }
 
       &.has-open-popup,
       &:hover { background-color: mix($fg_color, $selected_bg_color, 10%); }
@@ -3886,7 +3886,7 @@ row {
   padding: 10px;
   border-radius: 0 0 5px 5px;
   background-color: $osd_bg_color;
-  background-image: linear-gradient(to bottom, transparentize(black, 0.8),
+  background-image: linear-gradient(to bottom, transparentize(#151623, 0.8),
                                                transparent 2px);
   background-clip: padding-box;
 
@@ -3934,9 +3934,9 @@ calendar {
   }
 
   &.header {
-    border-bottom-color: transparentize(black, 0.9);
+    border-bottom-color: transparentize(#151623, 0.9);
 
-    &:backdrop { border-bottom-color: transparentize(black, 0.9); }
+    &:backdrop { border-bottom-color: transparentize(#151623, 0.9); }
   }
 
   &.button {
@@ -4342,7 +4342,7 @@ tooltip {
   &.background {
     // background-color needs to be set this way otherwise it gets drawn twice
     // see https://bugzilla.gnome.org/show_bug.cgi?id=736155 for details.
-    background-color: transparentize(black, 0.2);
+    background-color: transparentize(#151623, 0.2);
     background-clip: padding-box;
     border: 1px solid $tooltip_borders_color; // this suble border is meant to
                                               // not make the tooltip melt with
@@ -4352,15 +4352,15 @@ tooltip {
   padding: 4px; /* not working */
   border-radius: 5px;
   box-shadow: none; // otherwise it gets inherited by windowframe.csd
-  text-shadow: 0 1px black;
+  text-shadow: 0 1px #151623;
 
-  // FIXME: we need a border or tooltips vanish on black background.
+  // FIXME: we need a border or tooltips vanish on #151623 background.
   decoration { background-color: transparent; }
 
   * { // Yeah this is ugly
     padding: 4px;
     background-color: transparent;
-    color: white;
+    color: #cdd6f4;
   }
 }
 
@@ -4425,26 +4425,26 @@ colorswatch {
   }
 
   &.dark {
-    outline-color: transparentize(white, 0.4);
+    outline-color: transparentize(#cdd6f4, 0.4);
 
     overlay {
-      color: white;
+      color: #cdd6f4;
 
-      &:hover { border-color: if($variant == 'light', transparentize(black, 0.2), $borders_color); }
+      &:hover { border-color: if($variant == 'light', transparentize(#151623, 0.2), $borders_color); }
 
-      &:backdrop { color: transparentize(white, 0.5); }
+      &:backdrop { color: transparentize(#cdd6f4, 0.5); }
     }
   }
 
   &.light {
-    outline-color: transparentize(black, 0.4);
+    outline-color: transparentize(#151623, 0.4);
 
     overlay {
-      color: black;
+      color: #151623;
 
-      &:hover { border-color: if($variant == 'light', transparentize(black, 0.5), $borders_color); }
+      &:hover { border-color: if($variant == 'light', transparentize(#151623, 0.5), $borders_color); }
 
-      &:backdrop { color: transparentize(black, 0.5); }
+      &:backdrop { color: transparentize(#151623, 0.5); }
     }
   }
 
@@ -4459,21 +4459,21 @@ colorswatch {
 
     &.dark overlay {
       border-color: $drop_target_color;
-      box-shadow: inset 0 0 0 2px if($variant == 'light', transparentize(black, 0.7), $borders_color),
+      box-shadow: inset 0 0 0 2px if($variant == 'light', transparentize(#151623, 0.7), $borders_color),
                   inset 0 0 0 1px $drop_target_color;
     }
   }
 
   overlay {
-    border: 1px solid if($variant == 'light', transparentize(black, 0.7), $borders_color);
+    border: 1px solid if($variant == 'light', transparentize(#151623, 0.7), $borders_color);
 
     &:hover {
-      box-shadow: inset 0 1px transparentize(white, 0.6),
-                  inset 0 -1px transparentize(black, 0.8);
+      box-shadow: inset 0 1px transparentize(#cdd6f4, 0.6),
+                  inset 0 -1px transparentize(#151623, 0.8);
     }
 
     &:backdrop, &:backdrop:hover {
-      border-color: if($variant == 'light', transparentize(black, 0.7), $borders_color);
+      border-color: if($variant == 'light', transparentize(#151623, 0.7), $borders_color);
       box-shadow: none;
     }
   }
@@ -4496,7 +4496,7 @@ colorswatch {
     opacity: 0.5;
 
     overlay {
-      border-color: transparentize(black, 0.4);
+      border-color: transparentize(#151623, 0.4);
       box-shadow: none;
     }
   }
@@ -4557,10 +4557,10 @@ decoration {
 
   // this needs to be transparent
   // see bug #722563
-  $_wm_border: if($variant=='light', transparentize(black, 0.77), transparentize(black, 0.25));
-  $_wm_border_backdrop: if($variant=='light', transparentize(black, 0.82), transparentize(black, 0.25));
+  $_wm_border: if($variant=='light', transparentize(#151623, 0.77), transparentize(#151623, 0.25));
+  $_wm_border_backdrop: if($variant=='light', transparentize(#151623, 0.82), transparentize(#151623, 0.25));
 
-  box-shadow: 0 3px 9px 1px transparentize(black, 0.5),
+  box-shadow: 0 3px 9px 1px transparentize(#151623, 0.5),
               0 0 0 1px $_wm_border; //doing borders with box-shadow
 
   // FIXME rationalize shadows
@@ -4574,7 +4574,7 @@ decoration {
     // The biggest shadow should be in the same order then in the active state
     // or the jumping will happen during the transition.
     box-shadow: 0 3px 9px 1px transparent,
-                0 2px 6px 2px transparentize(black, 0.8),
+                0 2px 6px 2px transparentize(#151623, 0.8),
                 0 0 0 1px $_wm_border_backdrop;
     transition: $backdrop_transition;
   }
@@ -4607,7 +4607,7 @@ decoration {
 
   .csd.popup & {
     border-radius: $menu_radius;
-    box-shadow: 0 1px 2px transparentize(black, 0.8),
+    box-shadow: 0 1px 2px transparentize(#151623, 0.8),
                 0 0 0 1px transparentize($_wm_border, 0.1);
   }
 
@@ -4618,7 +4618,7 @@ decoration {
 
   messagedialog.csd & {
     border-radius: $window_radius;
-    box-shadow: 0 1px 2px transparentize(black, 0.8),
+    box-shadow: 0 1px 2px transparentize(#151623, 0.8),
                 0 0 0 1px transparentize($_wm_border, 0.1);
   }
 
@@ -4663,7 +4663,7 @@ button.titlebutton {
 .selection-mode .titlebar button.titlebutton,
 headerbar.selection-mode button.titlebutton,
 .titlebar.selection-mode button.titlebutton {
-  @include _button_text_shadow(white, $suggested_bg_color);
+  @include _button_text_shadow(#cdd6f4, $suggested_bg_color);
 
   &:backdrop { -gtk-icon-shadow: none; }
 }
