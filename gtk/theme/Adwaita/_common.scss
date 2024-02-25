@@ -62,13 +62,6 @@ $_switch_margin: if($_sizevariant=='default', 10px, 7px);
 .background {
   color: $fg_color;
   background-color: $bg_color;
-
-  &:backdrop {
-    color: $backdrop_fg_color;
-    background-color: $backdrop_bg_color;
-    text-shadow: none;
-    -gtk-icon-shadow: none;
-  }
 }
 
 /*
@@ -110,12 +103,6 @@ $_switch_margin: if($_sizevariant=='default', 10px, 7px);
   color: $text_color;
   caret-color: $caret_color;
   background-color: $base_color;
-
-  &:backdrop {
-    color: $backdrop_text_color;
-    background-color: $backdrop_base_color;
-    &:disabled { color: $backdrop_insensitive_color; }
-  }
 
   &:disabled {
     color: $insensitive_fg_color;
@@ -170,7 +157,6 @@ flowbox {
   border-radius: 0;
   padding: 0;
   
-  &:backdrop { background-color: if($variant=='light', transparent, darken($backdrop_base_color,5%)); }
   &:active, &:selected { background-color: if($variant=='light', transparent, $selected_bg_color); }
   &:disabled { background-color: if($variant=='light', transparent, $insensitive_bg_color); }
 }
@@ -194,23 +180,12 @@ label {
 
     button & { color: inherit; }
 
-    &:backdrop {
-      color: $backdrop_insensitive_color;
-
-      button & { color: inherit; }
-    }
-
     selection { @extend %selected_items_disabled; }
-  }
-
-  &:backdrop {
-    selection { @extend %selected_items_backdrop; }
   }
 
   &.error {
     color: $error_color;
     &:disabled { color: transparentize($error_color,0.5); }
-    &:disabled:backdrop { color: transparentize($error_color,0.6); }
   }
 }
 
@@ -223,11 +198,6 @@ assistant {
   .sidebar {
     background-color: $base_color;
     border-top: 1px solid $borders_color;
-
-    &:backdrop {
-      background-color: $backdrop_base_color;
-      border-color: $backdrop_borders_color;
-    }
   }
 
   &.csd .sidebar { border-top-style: none; }
@@ -245,11 +215,6 @@ assistant {
   background-clip: padding-box;
   text-shadow: 0 1px #151623;
   -gtk-icon-shadow: 0 1px #151623;
-
-  &:backdrop {
-    text-shadow: none;
-    -gtk-icon-shadow: none;
-  }
 }
 
 
@@ -262,7 +227,6 @@ assistant {
 
 spinner {
   background: none;
-  &:backdrop { color: $backdrop_fg_color; }
   opacity: 0; // non spinning spinner makes no sense
   -gtk-icon-source: -gtk-icontheme('process-working-symbolic');
 
@@ -338,7 +302,7 @@ entry {
 
 
     &.flat {
-      &:focus, &:backdrop, &:disabled, &:backdrop:disabled, & {
+      &:focus, &:disabled, & {
         min-height: 0;
         padding: 2px;
         background-color: transparent;
@@ -350,14 +314,6 @@ entry {
     &:focus { @include entry(focus); }
 
     &:disabled { @include entry(insensitive); }
-
-    &:backdrop {
-      @include entry(backdrop);
-
-      transition: $backdrop_transition;
-    }
-
-    &:backdrop:disabled { @include entry(backdrop-insensitive); }
 
     selection { @extend %selected_items; }
 
@@ -380,8 +336,6 @@ entry {
       &:hover { color: $fg_color; }
 
       &:active { color: $selected_bg_color; }
-
-      &:backdrop { color: mix($backdrop_fg_color, $backdrop_base_color, 80%); }
     }
 
     &:drop(active) {
@@ -396,8 +350,6 @@ entry {
 
       &:focus { @include entry(osd-focus); }
 
-      &:backdrop { @include entry(osd-backdrop); }
-
       &:disabled { @include entry(osd-insensitive); }
     }
   }
@@ -411,8 +363,6 @@ entry {
     border-color: $progress_bg_color;
     border-style: solid;
     box-shadow: none;
-
-    &:backdrop { background-color: transparent; }
   }
 
    // linked entries
@@ -438,8 +388,6 @@ entry {
     &:not(:disabled) + entry:not(:disabled),
     &:not(:disabled) + %entry:not(:disabled) {
       border-top-color: mix($borders_color, $base_color, 30%);
-
-      &:backdrop { border-top-color: mix($backdrop_borders_color, $backdrop_base_color, 30%); }
     }
 
     // brighter border between linked insensitive entries
@@ -531,18 +479,12 @@ treeview entry {
     background-color: lighten($_entry_tag_bg, 10%);
   }
 
-  :backdrop & {
-    color: $backdrop_base_color;
-    background-color: if($variant=='light', $selected_bg_color,
-                                            mix($backdrop_fg_color, $backdrop_base_color, 50%));
-  }
-
   &.button {
     background-color: transparent;
     color: transparentize($_entry_tag_color, 0.3);
   }
 
-  :not(:backdrop) &.button {
+  &.button {
     &:hover {
       border: 1px solid $_entry_tag_bg;
       color: $_entry_tag_color;
@@ -620,27 +562,8 @@ button {
       transition-duration: 50ms;
     }
 
-    &:backdrop {
-      &.flat, & {
-        @include button(backdrop);
-
-        transition: $backdrop_transition;
-        -gtk-icon-effect: none;
-
-        &:active,
-        &:checked { @include button(backdrop-active); }
-
-        &:disabled {
-          @include button(backdrop-insensitive);
-
-          &:active,
-          &:checked { @include button(backdrop-insensitive-active); }
-        }
-      }
-    }
-
     @at-root %button_basic_flat,
-    &.flat { &:backdrop, &:disabled, &:backdrop:disabled { @include button(undecorated); }}
+    &.flat { &:disabled { @include button(undecorated); }}
 
     &:disabled {
       @include button(insensitive);
@@ -688,8 +611,6 @@ button {
         &:not(:active):not(:checked):not(:hover):not(disabled) {
           color: $selected_fg_color;
           border-color: transparent;
-
-          &:backdrop { color: if($variant=='light', $backdrop_base_color, $backdrop_fg_color); }
         }
       }
     }
@@ -727,17 +648,11 @@ button {
     }
 
     &:disabled {
-      &:backdrop, & {
+      & {
         @include button(osd-insensitive);
 
         border: none;
       }
-    }
-
-    &:backdrop {
-      @include button(osd-backdrop);
-
-      border: none;
     }
   }
 
@@ -749,11 +664,9 @@ button {
     &:hover { @include button(osd-hover); }
 
     &:active,
-    &:checked { &:backdrop, & { @include button(osd-active); }}
+    &:checked { & { @include button(osd-active); }}
 
-    &:disabled { &:backdrop, & { @include button(osd-insensitive); }}
-
-    &:backdrop { @include button(osd-backdrop); }
+    &:disabled { & { @include button(osd-insensitive); }}
 
     &.flat {
       @include button(undecorated);
@@ -770,8 +683,6 @@ button {
         border-color: transparent;
         box-shadow: none;
       }
-
-      &:backdrop { @include button(undecorated); }
 
       &:active,
       &:checked { @include button(osd-active); }
@@ -795,23 +706,8 @@ button {
       &:active,
       &:checked { @include button(active, $b_color, #cdd6f4); }
 
-      &:backdrop,
-      &.flat:backdrop {
-        @include button(backdrop, $b_color, #cdd6f4);
-
-        &:active,
-        &:checked { @include button(backdrop-active, $b_color, #cdd6f4); }
-
-        &:disabled {
-          @include button(backdrop-insensitive);
-
-          &:active,
-          &:checked { @include button(backdrop-insensitive-active, $b_color, #cdd6f4); }
-        }
-      }
-
       &.flat {
-        &:backdrop, &:disabled, &:backdrop:disabled {
+        &:disabled {
           @include button(undecorated);
 
           color: transparentize($b_color, 0.2);
@@ -831,11 +727,9 @@ button {
         &:hover { @include button(osd-hover, $b_color); }
 
         &:active,
-        &:checked { &:backdrop, & { @include button(osd-active, $b_color); }}
+        &:checked { & { @include button(osd-active, $b_color); }}
 
-        &:disabled { &:backdrop, & { @include button(osd-insensitive, $b_color); }}
-
-        &:backdrop { @include button(osd-backdrop, $b_color); }
+        &:disabled { & { @include button(osd-insensitive, $b_color); }}
       }
     }
   }
@@ -916,13 +810,13 @@ button {
 
     $_border_bg: linear-gradient(to top, $alt-borders-color 25%, $borders-color 50%);
 
-    &:not(.flat):not(.osd):not(:checked):not(:active):not(:disabled):not(:backdrop) {
+    &:not(.flat):not(.osd):not(:checked):not(:active):not(:disabled) {
       @include button(normal, $backimage: $_border_bg);
 
       border-color: transparent;
     }
 
-    &:hover:not(.osd):not(:checked):not(:active):not(:disabled):not(:backdrop) {
+    &:hover:not(.osd):not(:checked):not(:active):not(:disabled) {
       @include button(hover, $backimage: $_border_bg);
 
       border-color: transparent;
@@ -954,8 +848,6 @@ button {
 
   @else { background-position: right 3px, right 2px; }
 
-  &:backdrop { background-size: 6px 6px, 0 0;}
-
   &:dir(rtl) {
     @if $variant == 'light' { background-position: left 3px, left 4px; }
 
@@ -980,20 +872,6 @@ button {
 
     &:active,
     &:checked { @include button(insensitive-active); }
-  }
-
-  &:backdrop {
-    @include button(backdrop);
-
-    &:active,
-    &:checked { @include button(backdrop-active); }
-
-    &:disabled {
-      @include button(backdrop-insensitive);
-
-      &:active,
-      &:checked { @include button(backdrop-insensitive-active); }
-    }
   }
 }
 
@@ -1123,9 +1001,6 @@ modelbutton.flat,
   &:hover { background-color: $popover_hover_color; }
 
   &:selected { @extend %selected_items; }
-
-  &:backdrop,
-  &:backdrop:hover { @extend %undecorated_button; }
 }
 
 modelbutton.flat arrow {
@@ -1154,7 +1029,6 @@ button.color {
   @if $variant == 'light' {
     .osd &, & {
       &:disabled,
-      &:backdrop,
       &:active,
       &:checked { colorswatch:only-child { box-shadow: none; }}
     }
@@ -1198,9 +1072,7 @@ list row button.image-button:not(.flat) {
     *:selected & { color: mix($selected_fg_color, $link_color, 80%); }
   }
 
-  &:disabled, &:disabled:backdrop { color: transparentize(desaturate($link_color, 100%), 0.2); }
-
-  &:backdrop { &:backdrop:hover, &:backdrop:hover:selected, & { color: transparentize($link_color, 0.1); }}
+  &:disabled { color: transparentize(desaturate($link_color, 100%), 0.2); }
 
   @at-root %link_selected,
   &:selected,
@@ -1253,8 +1125,6 @@ spinbutton {
       border: none;
       border-radius: 0;
       box-shadow: none;
-
-      &:backdrop:disabled { background-color: transparent; }
     }
 
     entry {
@@ -1288,22 +1158,6 @@ spinbutton {
       &:active {
         background-color: transparentize(#151623, 0.9);
         box-shadow: inset 0 2px 3px -1px transparentize(#151623, 0.8);
-      }
-
-      &:backdrop {
-        color: mix($backdrop_fg_color, $backdrop_base_color, 90%);
-        background-color: transparent;
-        border-color: transparentize($backdrop_borders_color, 0.7);
-        transition: $backdrop_transition;
-      }
-
-      &:backdrop:disabled {
-        color: transparentize($backdrop_insensitive_color,0.7);
-        background-color: transparent;
-        background-image: none;
-        border-style: none none none solid; // It is needed or it gets overridden
-
-        &:dir(rtl) { border-style: none solid none none; }
       }
 
       &:dir(ltr):last-child { border-radius: 0 $button_radius $button_radius 0; }
@@ -1340,15 +1194,6 @@ spinbutton {
         box-shadow: none;
       }
 
-      &:backdrop {
-        @include button(undecorated);
-
-        color: $osd_fg_color;
-        border-color: transparentize(opacify($osd_borders_color, 1), 0.5);
-        -gtk-icon-shadow: none;
-        box-shadow: none;
-      }
-
       &:disabled {
         @include button(undecorated);
 
@@ -1373,8 +1218,6 @@ spinbutton {
     // FIXME: this should not be set at all, but otherwise it gets the wrong
     // color
     &:disabled { color: $insensitive_fg_color; }
-
-    &:backdrop:disabled { color: $backdrop_insensitive_color; }
 
     &:drop(active) {
       border-color: transparent;
@@ -1418,8 +1261,6 @@ spinbutton {
     &:active { @include button(osd-active); }
 
     &:disabled { @include button(osd-insensitive); }
-
-    &:backdrop { @include button(osd-backdrop); }
   }
 
   // Misc
@@ -1553,13 +1394,6 @@ searchbar > revealer > box {
   border-color: $borders_color;
   $_bg: mix($bg_color, $borders_color, 70%);
   background-color: $_bg;
-
-  &:backdrop {
-    border-color: $backdrop_borders_color;
-    background-color: $backdrop_dark_fill;
-    box-shadow: none;
-    transition: $backdrop_transition;
-  }
 }
 
 
@@ -1576,15 +1410,6 @@ headerbar {
   border-radius: 0;
 
   @include headerbar_fill(darken($bg_color, 10%));
-
-  &:backdrop {
-    border-color: $backdrop_borders_color;
-    background-color: $bg_color;
-    background-image: none;
-    box-shadow: inset 0 1px $top_hilight;
-
-    transition: $backdrop_transition;
-  }
 
   .title {
     padding-left: 12px;
@@ -1607,9 +1432,6 @@ headerbar {
     background: if($variant == 'light', image(darken($bg_color, 17%)), image(darken($bg_color, 9%)));
     border-color: darken($borders_color, 3%);
     border-top-color: darken($borders_color, 8%);
-    &:backdrop {
-      @include button(backdrop-active);
-    }
   }
 
   .selection-mode &,
@@ -1621,17 +1443,6 @@ headerbar {
     text-shadow: 0 -1px transparentize(#151623, 0.5);
 
     @include headerbar_fill($suggested_bg_color, $_hc);
-
-    &:backdrop {
-      background-color: $suggested_bg_color;
-      background-image: none;
-      box-shadow: inset 0 1px mix($top_hilight, $suggested_bg_color, 60%);
-      
-      label { 
-        text-shadow: none;
-        color: $selected_fg_color; 
-      }
-    }
 
     .subtitle:link { @extend %link_selected; }
 
@@ -1648,36 +1459,8 @@ headerbar {
       &.toggle:checked,
       &.toggle:active { @include button(active, $suggested_bg_color, $selected_fg_color); }
 
-      &:backdrop {
-        &.flat, & {
-          @include button(backdrop, $suggested_bg_color, $selected_fg_color);
-
-          -gtk-icon-effect: none;
-          border-color: $suggested_border_color;
-
-          &:active,
-          &:checked {
-            @include button(backdrop-active, $suggested_bg_color, $selected_fg_color);
-
-            border-color: $suggested_border_color;
-          }
-
-          &:disabled {
-            @include button(backdrop-insensitive, $suggested_bg_color, $selected_fg_color);
-
-            border-color: $suggested_border_color;
-
-            &:active, &:checked {
-              @include button(backdrop-insensitive-active, $suggested_bg_color, $selected_fg_color);
-
-              border-color: $suggested_border_color;
-            }
-          }
-        }
-      }
-
       @at-root %selection_mode_button_flat,
-      &.flat { &:backdrop, &:disabled, &:backdrop:disabled { @include button(undecorated); }}
+      &.flat { &:disabled { @include button(undecorated); }}
 
       &:disabled {
         @include button(insensitive, $suggested_bg_color, $selected_fg_color);
@@ -1708,23 +1491,11 @@ headerbar {
 
           border-color: $suggested_border_color;
         }
-
-        &:backdrop {
-          @include button(backdrop);
-
-          border-color: $suggested_border_color;
-        }
-
-        &:backdrop:disabled {
-          @include button(backdrop-insensitive);
-
-          border-color: $suggested_border_color;
-        }
       }
     }
 
     .selection-menu {
-      &:backdrop, & {
+      & {
         border-color: transparentize($suggested_bg_color, 1);
         background-color: transparentize($suggested_bg_color, 1);
         background-image: none;
@@ -1751,7 +1522,7 @@ headerbar {
   .tiled-left &,
   .maximized &,
   .fullscreen & {
-    &:backdrop, & {
+    & {
       border-radius: 0;
     }
   }
@@ -1773,7 +1544,7 @@ headerbar {
   separator.titlebutton { opacity: 0; } /* hide the close button separator */
 
   .solid-csd & {
-    &:backdrop, & {
+    & {
       &:dir(rtl), &:dir(ltr) { // specificity bump
         margin-left: -1px;
         margin-right: -1px;
@@ -1811,7 +1582,7 @@ headerbar {
 }
 
 .background .titlebar {
-  &:backdrop, & {
+  & {
     border-top-left-radius: $window_radius;
     border-top-right-radius: $window_radius;
   }
@@ -1824,7 +1595,7 @@ headerbar {
 .background.tiled-left .titlebar,
 .background.maximized .titlebar,
 .background.solid-csd .titlebar {
-  &:backdrop, & {
+  & {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
@@ -1833,12 +1604,12 @@ headerbar {
 headerbar { // headerbar border rounding
 
   window separator:first-child + &,
-  window &:first-child { &:backdrop, & { border-top-left-radius: 7px; }}
-  window &:last-child { &:backdrop, & { border-top-right-radius: 7px; }}
+  window &:first-child { & { border-top-left-radius: 7px; }}
+  window &:last-child { & { border-top-right-radius: 7px; }}
 
   window stack & { // tackles the stacked headerbars case
     &:first-child, &:last-child {
-      &:backdrop, & {
+      & {
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
       }
@@ -1853,7 +1624,7 @@ headerbar { // headerbar border rounding
   window.maximized &,
   window.fullscreen &,
   window.solid-csd & {
-    &, &:backdrop {
+    & {
       &,
       &:first-child,
       &:last-child,
@@ -1896,11 +1667,6 @@ window.devel {
     }
 
     background: $bg_color $gradient;
-
-    &:backdrop {
-      background: $bg_color cross-fade(10% -gtk-icontheme("system-run-symbolic"), image(transparent)) 90% 0/256px 256px no-repeat,
-                  image($bg_color); /* background-color would flash */
-    }
   }
 }
 
@@ -1971,7 +1737,7 @@ treeview.view {
       @extend %selected_items;
     }
 
-    &:backdrop, & {
+    & {
       border-left-color: mix($selected_fg_color, $selected_bg_color, 50%);
       border-top-color: transparentize($fg_color, 0.9); // doesn't work unfortunatelly
     }
@@ -1982,23 +1748,14 @@ treeview.view {
 
     &:selected {
       color: mix($selected_fg_color, $selected_bg_color, 40%);
-      &:backdrop { color: mix($backdrop_selected_fg_color, $selected_bg_color, 30%); }
     }
-
-    &:backdrop { color: $backdrop_insensitive_color; }
   }
 
   &.separator {
     min-height: 2px;
     color: $bg_color;
-
-    &:backdrop { color: transparentize($bg_color, 0.9); }
   }
 
-  &:backdrop {
-    border-left-color: mix($backdrop_fg_color, $backdrop_bg_color, 50%);
-    border-top: $backdrop_bg_color;
-  }
   &:drop(active) {
     border-style: solid none;
     border-width: 1px;
@@ -2022,13 +1779,9 @@ treeview.view {
       color: mix($selected_fg_color, $selected_bg_color, 70%);
 
       &:hover { color: $selected_fg_color; }
-
-      &:backdrop { color: mix($backdrop_selected_fg_color, $selected_bg_color, 70%); }
     }
 
     &:checked { -gtk-icon-source: -gtk-icontheme('pan-down-symbolic'); }
-
-    &:backdrop { color: mix($backdrop_fg_color, $backdrop_base_color, 70%); }
   }
 
   &.progressbar { // progress bar in treeviews
@@ -2049,22 +1802,7 @@ treeview.view {
         @else { box-shadow: inset 0 1px transparentize(#cdd6f4, 0.95); }
 
         background-image: image($base_color);
-
-        &:backdrop {
-          @if $variant == 'light' {
-            color: $selected_bg_color;
-          }
-          background-color: $backdrop_base_color;
-        }
       }
-    }
-
-    &:backdrop {
-      @if $variant == 'light' { color: $backdrop_base_color; }
-
-      @else { border-color: $backdrop_base_color; }
-      background-image: none;
-      box-shadow: none;
     }
   }
 
@@ -2141,20 +1879,7 @@ treeview.view {
     background-image: none;
   }
 
-  &:backdrop {
-    color: mix($backdrop_fg_color, $backdrop_bg_color, 50%);
-    border-color: $backdrop_bg_color;
-    border-style: none solid solid none;
-    background-image: none;
-    background-color: $backdrop_base_color;
-
-    &:disabled {
-      border-color: $backdrop_bg_color;
-      background-image: none;
-    }
-  }
-
-  &:last-child { &:backdrop, & { border-right-style: none; }}
+  &:last-child { & { border-right-style: none; }}
 }
 
 
@@ -2167,8 +1892,6 @@ menubar,
   -GtkWidget-window-dragging: true;
   padding: 0px;
   box-shadow: inset 0 -1px transparentize(#151623, 0.9);
-
-  &:backdrop { background-color: $backdrop_bg_color; }
 
   > menuitem {
     min-height: 16px;
@@ -2214,8 +1937,6 @@ menu,
     border-radius: $menu_radius;
   }
 
-  &:backdrop { background-color: $backdrop_menu_color; }
-
   menuitem {
     min-height: 16px;
     min-width: 40px;
@@ -2229,13 +1950,6 @@ menu,
 
     &:disabled {
       color: $insensitive_fg_color;
-      &:backdrop { color: $backdrop_insensitive_color; }
-    }
-
-    &:backdrop,
-    &:backdrop:hover {
-      color: $backdrop_fg_color;
-      background-color: transparent;
     }
 
     // submenu indicators
@@ -2288,8 +2002,6 @@ menu,
 
     &:hover { background-color: mix($fg_color, $base_color, 10%); }
 
-    &:backdrop { background-color: $backdrop_menu_color; }
-
     &:disabled {
       color: transparent;
       background-color: transparent;
@@ -2333,11 +2045,6 @@ popover.background {
 
   box-shadow: 0 1px 2px transparentize(#151623, 0.7);
 
-  &:backdrop {
-    background-color: $backdrop_bg_color;
-    box-shadow: none;
-  }
-
   > list,
   > .view,
   > toolbar {
@@ -2373,11 +2080,6 @@ notebook {
     border-width: 1px;
     background-color: $dark_fill;
 
-    &:backdrop {
-      border-color: $backdrop_borders_color;
-      background-color: $backdrop_dark_fill;
-    }
-
     tabs { margin: -1px; }
 
     &.top {
@@ -2386,8 +2088,6 @@ notebook {
         margin-bottom: -2px;
         > tab {
           &:hover { box-shadow: inset 0 -4px $borders_color; }
-
-          &:backdrop { box-shadow: none; }
 
           &:checked { box-shadow: inset 0 -4px $selected_bg_color; }
         }
@@ -2401,8 +2101,6 @@ notebook {
         > tab {
           &:hover { box-shadow: inset 0 4px $borders_color; }
 
-          &:backdrop { box-shadow: none; }
-
           &:checked { box-shadow: inset 0 4px $selected_bg_color; }
         }
       }
@@ -2415,8 +2113,6 @@ notebook {
         > tab {
           &:hover { box-shadow: inset -4px 0 $borders_color; }
 
-          &:backdrop { box-shadow: none; }
-
           &:checked { box-shadow: inset -4px 0 $selected_bg_color; }
         }
       }
@@ -2428,8 +2124,6 @@ notebook {
         margin-left: -2px;
         > tab {
           &:hover { box-shadow: inset 4px 0 $borders_color; }
-
-          &:backdrop { box-shadow: none; }
 
           &:checked { box-shadow: inset 4px 0 $selected_bg_color; }
         }
@@ -2491,7 +2185,7 @@ notebook {
       min-width: 16px;
       border-radius: 0;
 
-      &:hover:not(:active):not(:backdrop) {
+      &:hover:not(:active) {
         background-clip: padding-box;
         background-image: none;
         background-color: transparentize(#cdd6f4, 0.7);
@@ -2525,15 +2219,6 @@ notebook {
         }
       }
 
-      &:backdrop {
-        color: mix($backdrop_fg_color, $backdrop_bg_color, 60%);
-
-        &.reorderable-page {
-          border-color: transparent;
-          background-color: transparent;
-        }
-      }
-
       &:checked {
         color: $fg_color;
         &.reorderable-page {
@@ -2544,20 +2229,11 @@ notebook {
         }
       }
 
-      &:backdrop:checked {
-        color: $backdrop_fg_color;
-
-        &.reorderable-page {
-          border-color: $backdrop_borders_color;
-          background-color: $backdrop_bg_color;
-        }
-      }
-
       // colors the button like the label, overridden otherwise
       button.flat {
         &:hover { color: currentColor; }
 
-        &, &:backdrop { color: gtkalpha(currentColor, 0.3); }
+        & { color: gtkalpha(currentColor, 0.3); }
 
         padding: 0;
         margin-top: 4px;
@@ -2630,8 +2306,6 @@ notebook {
 
   > stack:not(:only-child) { // the :not(:only-child) is for "hidden" notebooks
     background-color: $base_color;
-
-    &:backdrop { background-color: $backdrop_base_color; }
   }
 }
 
@@ -2660,12 +2334,6 @@ scrollbar {
   &.left { border-right: 1px solid $borders_color; }
   &.right { border-left: 1px solid $borders_color; }
 
-  &:backdrop {
-    background-color: $backdrop_scrollbar_bg_color;
-    border-color: $backdrop_borders_color;
-    transition: $backdrop_transition;
-  }
-
   // slider
   slider {
     min-width: $_slider_width;
@@ -2680,8 +2348,6 @@ scrollbar {
     &:hover { background-color: $scrollbar_slider_hover_color; }
 
     &:hover:active { background-color: $scrollbar_slider_active_color; }
-
-    &:backdrop { background-color: $backdrop_scrollbar_slider_color; }
 
     &:disabled { background-color: transparent; }
   }
@@ -2782,17 +2448,6 @@ scrollbar {
 
       color: transparentize($scrollbar_slider_color, 0.8);
     }
-    &:backdrop {
-      @include button(undecorated);
-
-      color: $backdrop_scrollbar_slider_color;
-
-      &:disabled {
-        @include button(undecorated);
-
-        color: transparentize($backdrop_scrollbar_slider_color, 0.8);
-      }
-    }
   }
 
   // button icons
@@ -2846,27 +2501,6 @@ switch {
     text-shadow: none;
   }
 
-  &:backdrop {
-    color: $backdrop_fg_color;
-    border-color: $backdrop_borders_color;
-    background-color: $backdrop_dark_fill;
-    text-shadow: none;
-    transition: $backdrop_transition;
-
-    &:checked {
-      @if $variant == 'light' { color: $backdrop_bg_color; }
-      border-color: if($variant == 'light', $checkradio_borders_color,
-                                            $selected_borders_color);
-      background-color: $checkradio_bg_color;
-    }
-
-    &:disabled {
-      color: $backdrop_insensitive_color;
-      border-color: $backdrop_borders_color;
-      background-color: $insensitive_bg_color;
-    }
-  }
-
   slider {
     margin: -1px;
     min-width: 24px;
@@ -2899,24 +2533,10 @@ switch {
 
   &:disabled slider { @include button(insensitive); }
 
-  &:backdrop {
-    slider {
-      transition: $backdrop_transition;
-
-      @include button(backdrop);
-    }
-
-    &:checked > slider { border-color: $checkradio_borders_color; }
-
-    &:disabled slider { @include button(backdrop-insensitive); }
-  }
-
   row:selected & {
     @if $variant == 'light' {
       box-shadow: none;
       border-color: $checkradio_borders_color;
-
-      &:backdrop { border-color: $checkradio_borders_color; }
 
       > slider { &:checked, & { border-color: $checkradio_borders_color; } }
     }
@@ -2937,11 +2557,9 @@ switch {
   ('', 'none', 'transparent', $checkradio_bg_color),
   (':hover', 'none', 'transparent', $checkradio_bg_color),
   (':active', 'none', 'transparent', $checkradio_bg_color),
-  (':backdrop', 'none', 'transparent', '#{desaturate($checkradio_bg_color, 100%)}'),
   (':checked', '-gtk-icontheme(\'object-select-symbolic\')', $osd_fg_color, $checkradio_bg_color),
   (':checked:hover', '-gtk-icontheme(\'object-select-symbolic\')', $osd_fg_color, $checkradio_bg_color),
   (':checked:active', '-gtk-icontheme(\'object-select-symbolic\')', $osd_fg_color, $checkradio_bg_color),
-  (':backdrop:checked', '-gtk-icontheme(\'object-select-symbolic\')', '#{transparentize($osd_fg_color, 0.2)}', '#{desaturate($checkradio_bg_color, 100%)}'), {
 
   .view.content-view.check#{$check_state}:not(list),
   .content-view:not(list) check#{$check_state} {
@@ -3002,9 +2620,7 @@ radio {
     @each $state, $t in ("", "normal"),
                         (":hover", "hover"),
                         (":active", "active"),
-                        (":disabled", "insensitive"),
-                        (":backdrop", "backdrop"),
-                        (":backdrop:disabled", 'backdrop-insensitive') {
+                        (":disabled", "insensitive") {
       &#{$state} {
         @include check($t, $_c);
       }
@@ -3018,9 +2634,7 @@ radio {
         @each $state, $t in ("", "normal"),
                             (":hover", "hover"),
                             (":active", "active"),
-                            (":disabled", "insensitive"),
-                            (":backdrop", "backdrop"),
-                            (":backdrop:disabled", 'backdrop-insensitive') {
+                            (":disabled", "insensitive") {
           &#{$state} {
             @include check($t, $checkradio_bg_color, $checkradio_fg_color, $checked: true);
           }
@@ -3028,8 +2642,6 @@ radio {
       }
     }
   }
-
-  &:backdrop { transition: $backdrop_transition; }
   
   @if $variant == 'light' {
     // the borders of the light variant versions of checks and radios are too similar in luminosity to the selected background
@@ -3042,7 +2654,6 @@ radio {
 
     &:hover { @include button(osd); }
     &:active { @include button(osd-active); }
-    &:backdrop { @include button(osd-backdrop); }
     &:disabled { @include button(osd-insensitive); }
   }
 
@@ -3089,15 +2700,15 @@ radio {
 // ANIMATION:
 // this is made with those pretty convoluted transitions, since checks and radios have to animate only on state changes,
 // the transformation is set on the active state and it get reset on the checked state.
-radio:not(:indeterminate):not(:checked):active:not(:backdrop) { -gtk-icon-transform: scale(0); }
+radio:not(:indeterminate):not(:checked):active { -gtk-icon-transform: scale(0); }
 
-check:not(:indeterminate):not(:checked):active:not(:backdrop) { -gtk-icon-transform: translate(6px, -3px) rotate(-45deg) scaleY(0.2) rotate(45deg) scaleX(0); }
+check:not(:indeterminate):not(:checked):active { -gtk-icon-transform: translate(6px, -3px) rotate(-45deg) scaleY(0.2) rotate(45deg) scaleX(0); }
 
 radio,
 check {
   &:active { -gtk-icon-transform: scale(0, 1); } // should tackle the indeterminate state, untested
 
-  &:checked:not(:backdrop), &:indeterminate:not(:backdrop) {
+  &:checked, &:indeterminate {
     -gtk-icon-transform: unset;
     transition: 400ms;
   }
@@ -3106,7 +2717,7 @@ check {
 menu menuitem {
   radio,
   check {
-     &:checked:not(:backdrop), &:indeterminate:not(:backdrop) { transition: none; }
+     &:checked, &:indeterminate { transition: none; }
   }
 }
 
@@ -3134,14 +2745,6 @@ treeview.view radio:selected { &:focus, & { @extend %radio; }} // This is a work
 
   &:disabled { background-color: $insensitive_bg_color; }
 
-  &:backdrop {
-    background-color: $backdrop_dark_fill;
-    border-color: $backdrop_borders_color;
-    transition: $backdrop_transition;
-
-    &:disabled { background-color: $insensitive_bg_color; }
-  }
-
   // ...on selected list rows
   row:selected & { &:disabled, & { border-color: $selected_borders_color; }}
 
@@ -3162,15 +2765,6 @@ treeview.view radio:selected { &:focus, & { @extend %radio; }} // This is a work
   &:disabled {
     background-color: transparent;
     border-color: transparent;
-  }
-
-  &:backdrop {
-    border-color: if($variant=='light', $progress_bg_color,
-                                        $progress_border_color);
-    &:disabled {
-      background-color: transparent;
-      border-color: transparent;
-    }
   }
 
   // ...on selected list rows
@@ -3246,10 +2840,10 @@ scale {
   fill {
     @extend %scale_trough;
 
-    &:backdrop, & { background-color: $borders_color; }
+    & { background-color: $borders_color; }
 
     &:disabled {
-      &:backdrop, & {
+      & {
         border-color: transparent;
         background-color: transparent;
       }
@@ -3260,7 +2854,7 @@ scale {
       background-color: mix($osd_fg_color, $osd_borders_color, 25%);
 
       &:disabled {
-        &:backdrop, & {
+        & {
           border-color: transparent;
           background-color: transparent;
         }
@@ -3281,14 +2875,6 @@ scale {
     &:active { border-color: $progress_border_color; }
 
     &:disabled { @include button(insensitive); }
-
-    &:backdrop {
-      transition: $backdrop_transition;
-
-      @include button(backdrop);
-
-      &:disabled { @include button(backdrop-insensitive); }
-    }
 
     // ...on selected list rows
     row:selected & { &:disabled, & { border-color: $selected_borders_color; } }
@@ -3312,16 +2898,6 @@ scale {
       &:disabled {
         @include button(osd-insensitive);
         background-color: opacify($osd_bg_color, 1); // solid background needed here
-      }
-
-      &:backdrop {
-        @include button(osd-backdrop);
-        background-color: opacify($osd_bg_color, 1); // solid background needed here
-
-        &:disabled {
-          @include button(osd-backdrop-insensitive);
-          background-color: opacify($osd_bg_color, 1); // solid background needed here
-        }
       }
     }
   }
@@ -3382,9 +2958,7 @@ scale {
       @each $state, $state_infix in ('', ''),
                                     (':hover', '-hover'),
                                     (':active', '-active'),
-                                    (':disabled', '-insensitive'),
-                                    (':backdrop', '-backdrop'),
-                                    (':backdrop:disabled', '-backdrop-insensitive') {
+                                    (':disabled', '-insensitive') {
         &.#{$dir_class}.#{$marks_class} {
 
           slider {
@@ -3479,7 +3053,7 @@ scale {
 
       slider {
         &:dir(ltr), &:dir(rtl) { // specificity bumb
-          &:hover, &:backdrop, &:disabled, &:backdrop:disabled, & {
+          &:hover, &:disabled, & {
             margin-bottom: -15px;
             margin-top: 6px;
           }
@@ -3499,7 +3073,7 @@ scale {
         }
 
         slider {
-          &:hover, &:backdrop, &:disabled, &:backdrop:disabled, & {
+          &:hover, &:disabled, & {
             margin-left: -15px;
             margin-right: 6px;
           }
@@ -3517,7 +3091,7 @@ scale {
         }
 
         slider {
-          &:hover, &:backdrop, &:disabled, &:backdrop:disabled, & {
+          &:hover, &:disabled, & {
             margin-right: -15px;
             margin-left: 6px;
           }
@@ -3600,11 +3174,6 @@ progressbar {
   color: transparentize($fg_color, 0.6);
   font-feature-settings: "tnum";
 
-  &:backdrop {
-    box-shadow: none;
-    transition: $backdrop_transition;
-  }
-
   trough { @extend %scale_trough; }
 
   progress {
@@ -3681,15 +3250,11 @@ levelbar {
     }
   }
 
-  &:backdrop { transition: $backdrop_transition; }
-
   trough {
     border: 1px solid;
     padding: 2px;
     border-radius: 3px;
     @include entry(normal);
-
-    &:backdrop { @include entry(backdrop); }
   }
 
   block {
@@ -3699,30 +3264,22 @@ levelbar {
     &.low {
       border-color: if($variant == 'light', darken($warning_color, 20%), $warning_color);
       background-color: $warning_color;
-
-      &:backdrop { border-color: $warning_color; };
     }
 
     &.high,
     &:not(.empty) {
       border-color: if($variant == 'light', darken($progress_bg_color, 20%), $progress_bg_color);
       background-color: $progress_bg_color;
-
-      &:backdrop { border-color: $progress_bg_color; }
     }
 
     &.full {
       border-color: if($variant == 'light', darken($success_color, 20%), $success_color);
       background-color: $success_color;
-
-      &:backdrop { border-color: $success_color; };
     }
 
     &.empty {
       background-color: transparent;
       border-color: if($variant == 'light', transparentize($fg_color,0.8), transparentize($fg_color,0.9));
-
-      &:backdrop { border-color: transparentize($backdrop_fg_color,0.85); }
     }
   }
 }
@@ -3737,11 +3294,6 @@ printdialog {
     border: 1px solid $borders_color;
     background: #cdd6f4;
     padding: 0;
-
-    &:backdrop {
-      color: $backdrop_fg_color;
-      border-color: $backdrop_borders_color;
-    }
   }
 
   .dialog-action-box { margin: 12px; }
@@ -3760,15 +3312,11 @@ frame > border,
   border: 1px solid $borders_color;
 
   &.flat { border-style: none; }
-
-  &:backdrop { border-color: $backdrop_borders_color; }
 }
 
 actionbar > revealer >  box {
   padding: 6px;
   border-top: 1px solid $borders_color;
-
-  &:backdrop { border-color: $backdrop_borders_color; }
 }
 
 scrolledwindow {
@@ -3781,26 +3329,18 @@ scrolledwindow {
   overshoot {
     &.top {
       @include overshoot(top);
-
-      &:backdrop { @include overshoot(top, backdrop); }
     }
 
     &.bottom {
       @include overshoot(bottom);
-
-      &:backdrop { @include overshoot(bottom, backdrop); }
     }
 
     &.left {
       @include overshoot(left);
-
-      &:backdrop { @include overshoot(left, backdrop); }
     }
 
     &.right {
       @include overshoot(right);
-
-      &:backdrop { @include overshoot(right, backdrop); }
     }
   }
 
@@ -3812,12 +3352,6 @@ scrolledwindow {
     background-color: $scrollbar_bg_color;
 
     &:dir(rtl) { border-image-slice: 0 1 0 0; }
-
-    &:backdrop {
-      border-image-source: linear-gradient(to bottom, $backdrop_borders_color 1px, transparent 1px);
-      background-color: $backdrop_scrollbar_bg_color;
-      transition: $backdrop_transition;
-    }
   }
 }
 
@@ -3837,12 +3371,6 @@ list {
   background-color: $base_color;
   border-color: $borders_color;
 
-  &:backdrop {
-    color: $backdrop_text_color;
-    background-color: $backdrop_base_color;
-    border-color: $backdrop_borders_color;
-  }
-
   row { padding: 2px; }
 }
 
@@ -3851,8 +3379,6 @@ row {
 
   &:hover { transition: none; }
 
-  &:backdrop { transition: $backdrop_transition; }
-
   &.activatable {
     &.has-open-popup, // this is for indicathing which row generated a popover see https://bugzilla.gnome.org/show_bug.cgi?id=754411
 
@@ -3860,15 +3386,11 @@ row {
 
     &:active { box-shadow: inset 0 2px 2px -2px transparentize(#151623, 0.8); }
 
-    &:backdrop:hover { background-color: transparent; }
-
     &:selected {
       &:active { box-shadow: inset 0 2px 3px -1px transparentize(#151623, 0.5); }
 
       &.has-open-popup,
       &:hover { background-color: mix($fg_color, $selected_bg_color, 10%); }
-
-      &:backdrop { background-color: $selected_bg_color; }
     }
   }
 
@@ -3890,11 +3412,6 @@ row {
                                                transparent 2px);
   background-clip: padding-box;
 
-  &:backdrop {
-    background-image: none;
-    transition: $backdrop_transition;
-  }
-
   button { @extend %osd_button; }
 
   border { border: none; }
@@ -3913,7 +3430,6 @@ expander {
 
     &:hover { color: lighten($fg_color,30%); } //only lightens the arrow
     &:disabled { color: $insensitive_fg_color; }
-    &:disabled:backdrop { color: $backdrop_insensitive_color; }
 
     &:checked { -gtk-icon-source: -gtk-icontheme('pan-down-symbolic'); }
   }
@@ -3935,8 +3451,6 @@ calendar {
 
   &.header {
     border-bottom-color: transparentize(#151623, 0.9);
-
-    &:backdrop { border-bottom-color: transparentize(#151623, 0.9); }
   }
 
   &.button {
@@ -3946,20 +3460,11 @@ calendar {
 
     &:hover { color: $fg_color; }
 
-    &:backdrop { color: transparentize($backdrop_fg_color,0.55); }
-
     &:disabled { color:  transparentize($insensitive_fg_color,0.55); }
   }
 
   &.highlight {
     color: $insensitive_fg_color;
-
-    &:backdrop { color: $backdrop_insensitive_color; }
-  }
-
-  &:backdrop {
-    color: $backdrop_text_color;
-    border-color: $backdrop_borders_color;
   }
 
   &:indeterminate { color: gtkalpha(currentColor, 0.1); }
@@ -4010,8 +3515,6 @@ messagedialog { // Message Dialog styling
 filechooser {
   .dialog-action-box {
     border-top: 1px solid $borders_color;
-
-    &:backdrop { border-top-color: $backdrop_borders_color; }
   }
 
   #pathbarbox { border-bottom: 1px solid $bg_color; }
@@ -4045,12 +3548,6 @@ filechooserbutton:drop(active) {
       border-left: 1px solid $borders_color;
       border-right-style: none;
     }
-  }
-
-  &:backdrop {
-    background-color: $backdrop_sidebar_bg_color;
-    border-color: $backdrop_borders_color;
-    transition: $backdrop_transition;
   }
 
   list { background-color: transparent; }
@@ -4087,10 +3584,6 @@ stacksidebar {
 separator.sidebar {
   background-color: $borders_color;
 
-  &:backdrop {
-    background-color: $backdrop_borders_color;
-  }
-
   &.selection-mode,
   .selection-mode & {
     background-color: darken($suggested_bg_color, 20%);
@@ -4123,14 +3616,6 @@ placessidebar {
 
     &:disabled { color: $insensitive_fg_color; }
 
-    &:backdrop {
-      color: $backdrop_fg_color;
-
-      &:selected { color: $backdrop_selected_fg_color; }
-
-      &:disabled { color: $backdrop_insensitive_color; }
-    }
-
     image.sidebar-icon {
       &:dir(ltr) { padding-right: 8px; }
       &:dir(rtl) { padding-left: 8px; }
@@ -4154,8 +3639,7 @@ placessidebar {
       border-radius: 100%;
       -gtk-outline-radius: 100%;
 
-      &:not(:hover):not(:active),
-      &:backdrop { > image { opacity: $_placesidebar_icons_opacity; }}
+      &:not(:hover):not(:active) { > image { opacity: $_placesidebar_icons_opacity; }}
     }
 
     // in the sidebar case it makes no sense to click the selected row
@@ -4220,20 +3704,12 @@ paned {
 
     &:selected { background-image: image($selected_bg_color); } // FIXME is this needed?
 
-    &:backdrop { background-image: image($backdrop_borders_color); }
-
     &.wide {
       min-width: 5px;
       min-height: 5px;
       background-color: $bg_color;
       background-image: image($borders_color), image($borders_color);
       background-size: 1px 1px, 1px 1px;
-
-      &:backdrop {
-        background-color: $backdrop_bg_color;
-        background-image: image($backdrop_borders_color),
-                          image($backdrop_borders_color);
-      }
     }
   }
 
@@ -4291,16 +3767,7 @@ infobar {
   &.question,
   &.warning,
   &.error {
-    &:backdrop > revealer > box, & > revealer > box {
-      label, & { color: $fg_color; }
-      background-color: if($variant == 'light', desaturate(lighten(invert($selected_bg_color), 45%), 30%), 
-                        desaturate(darken(invert($selected_bg_color),40%), 70%));
-      border-bottom: 1px solid lighten($borders_color, 5%);
-    }
-
     text-shadow: none;
-
-    &:backdrop { text-shadow: none; }
 
     button {
       // FIXME: extend selection mode buttons
@@ -4313,17 +3780,7 @@ infobar {
 
       &:disabled { @include button(insensitive,$bg_color,$fg_color,none); }
 
-      &:backdrop {
-        @include button(backdrop, $bg_color, $fg_color, none);
-        border-color: _border_color($bg_color);
-
-        &:disabled {
-          @include button(backdrop-insensitive, $bg_color,
-                          $fg_color, none);
-          border-color: _border_color($bg_color);
-        }
-      }
-      &:backdrop, & {
+      & {
         label, & { color: $fg_color; }
       }
     }
@@ -4431,8 +3888,6 @@ colorswatch {
       color: #cdd6f4;
 
       &:hover { border-color: if($variant == 'light', transparentize(#151623, 0.2), $borders_color); }
-
-      &:backdrop { color: transparentize(#cdd6f4, 0.5); }
     }
   }
 
@@ -4443,8 +3898,6 @@ colorswatch {
       color: #151623;
 
       &:hover { border-color: if($variant == 'light', transparentize(#151623, 0.5), $borders_color); }
-
-      &:backdrop { color: transparentize(#151623, 0.5); }
     }
   }
 
@@ -4471,11 +3924,6 @@ colorswatch {
       box-shadow: inset 0 1px transparentize(#cdd6f4, 0.6),
                   inset 0 -1px transparentize(#151623, 0.8);
     }
-
-    &:backdrop, &:backdrop:hover {
-      border-color: if($variant == 'light', transparentize(#151623, 0.7), $borders_color);
-      box-shadow: none;
-    }
   }
 
   &#add-color-button {
@@ -4487,8 +3935,6 @@ colorswatch {
       @include button(normal);
 
       &:hover { @include button(hover); }
-
-      &:backdrop { @include button(backdrop); }
     }
   }
 
@@ -4522,8 +3968,6 @@ colorchooser .popover.osd { border-radius: 5px; }
 
   &:hover { -gtk-icon-effect: highlight; }
 
-  &:backdrop { background-color: darken($bg_color,7%); }
-
   rubberband, .rubberband { @extend rubberband; }
 }
 
@@ -4541,8 +3985,6 @@ colorchooser .popover.osd { border-radius: 5px; }
       background-color: transparentize($fg_color,0.9);
       border-radius: 5px;
     }
-
-    &:backdrop { &:hover, &:disabled, & { @extend %undecorated_button; }}
   }
 }
 
@@ -4568,17 +4010,6 @@ decoration {
   // this is used for the resize cursor area
   margin: 10px;
 
-  &:backdrop {
-    // the transparent shadow here is to enforce that the shadow extents don't
-    // change when we go to backdrop, to prevent jumping windows.
-    // The biggest shadow should be in the same order then in the active state
-    // or the jumping will happen during the transition.
-    box-shadow: 0 3px 9px 1px transparent,
-                0 2px 6px 2px transparentize(#151623, 0.8),
-                0 0 0 1px $_wm_border_backdrop;
-    transition: $backdrop_transition;
-  }
-
   .maximized &,
   .fullscreen & { border-radius: 0; box-shadow: none; }
 
@@ -4590,10 +4021,6 @@ decoration {
     border-radius: 0;
     box-shadow: 0 0 0 1px $_wm_border,
                 0 0 0 20px transparent; //transparent control workaround -- #3670
-
-    &:backdrop { box-shadow: 0 0 0 1px $_wm_border_backdrop,
-                             0 0 0 20px transparent; // #3670
-    }
    }
 
   .popup & { box-shadow: none; }
@@ -4601,9 +4028,7 @@ decoration {
   // server-side decorations as used by mutter
   // just doing borders, wm draws actual shadows
   .ssd & { box-shadow: 0 0 0 1px $_wm_border; }
-  .ssd &:backdrop { box-shadow: 0 0 0 1px $_wm_border_backdrop; }
-  .ssd.maximized &,
-  .ssd.maximized &:backdrop { box-shadow: none; }
+  .ssd.maximized & { box-shadow: none; }
 
   .csd.popup & {
     border-radius: $menu_radius;
@@ -4629,8 +4054,6 @@ decoration {
     border: solid 1px $borders_color;
     border-radius: 0;
     box-shadow: inset 0 0 0 3px $headerbar_color, inset 0 1px $top_hilight;
-
-    &:backdrop { box-shadow: inset 0 0 0 3px $backdrop_bg_color, inset 0 1px $top_hilight; }
   }
 }
 
@@ -4655,8 +4078,6 @@ button.titlebutton {
 
     @extend %nobg_selected_items;
   }
-
-  &:backdrop { -gtk-icon-shadow: none; }
 }
 
 .selection-mode headerbar button.titlebutton,
@@ -4664,8 +4085,6 @@ button.titlebutton {
 headerbar.selection-mode button.titlebutton,
 .titlebar.selection-mode button.titlebutton {
   @include _button_text_shadow(#cdd6f4, $suggested_bg_color);
-
-  &:backdrop { -gtk-icon-shadow: none; }
 }
 
 // catch all extend :)
@@ -4679,8 +4098,7 @@ headerbar.selection-mode button.titlebutton,
     @at-root %selected_items_disabled,
     &:disabled { color: mix($selected_fg_color, $selected_bg_color, 50%); }
 
-    @at-root %selected_items_backdrop,
-    &:backdrop {
+    @at-root %selected_items_backdrop {
       color: $backdrop_selected_fg_color;
 
       &:disabled { color: mix($backdrop_selected_fg_color, $selected_bg_color, 30%); }
@@ -4744,12 +4162,6 @@ cursor-handle {
   border-radius: 5px;
   box-shadow: if($variant == 'light', inset 0 -3px mix($base_color, $bg_color, 20%), inset 0 -3px mix($borders_color, $base_color, 60%));
   font-size: smaller;
-
-  &:backdrop {
-    background-color: $backdrop_base_color;
-    color: $backdrop_fg_color;
-    transition: $backdrop_transition;
-  }
 }
 
 :not(decoration):not(window):drop(active):focus,
@@ -4820,7 +4232,6 @@ button.emoji-section {
   &:first-child { margin-left: 7px; }
   &:last-child { margin-right: 7px; }
 
-  &:backdrop:not(:checked) { border-color: transparent; }
   &:hover { border-color: if($variant == 'light', $borders_color, transparentize($fg_color, .9)); }
   &:checked { border-color: $selected_bg_color; }
 
